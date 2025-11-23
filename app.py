@@ -3,6 +3,7 @@ import joblib
 import os
 import google.generativeai as genai
 from utils import check_typosquatting, clean_text
+from training import train_model
 
 # --- Page Config ---
 st.set_page_config(page_title="PhishingGuard Hybrid", page_icon="🛡️")
@@ -11,9 +12,17 @@ st.set_page_config(page_title="PhishingGuard Hybrid", page_icon="🛡️")
 @st.cache_resource
 def load_models():
     model_path = os.path.join("models", "phishing_model.pkl")
+
+    # If model doesn't exist, train it on the fly (useful for cloud deployment)
     if not os.path.exists(model_path):
-        st.error("Model not found! Please run `training.py` first.")
-        return None
+        with st.spinner("Model not found. Training Phishing Detection Model..."):
+            try:
+                model = train_model()
+                return model
+            except Exception as e:
+                st.error(f"Error training model: {e}")
+                return None
+
     try:
         model = joblib.load(model_path)
         return model

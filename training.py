@@ -95,5 +95,7 @@ def train_model():
     joblib.dump(pipeline, model_path)
     print(f"Model saved to {model_path}")
 
+    return pipeline
+
 if __name__ == "__main__":
     train_model()
