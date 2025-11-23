@@ -2,7 +2,7 @@ import streamlit as st
 import joblib
 import os
 import google.generativeai as genai
-from utils import check_typosquatting, clean_text
+from utils import check_typosquatting, clean_text, is_trusted_domain
 from training import train_model
 
 # --- Page Config ---
@@ -65,20 +65,34 @@ if st.button("Analyze Email"):
 
             # Get probability
             # Classes are [0, 1] -> index 1 is Phishing
-            prediction_prob = model.predict_proba([cleaned_text])[0][1]
+            raw_prob = model.predict_proba([cleaned_text])[0][1]
+
+            # 3. Trusted Domain Adjustment
+            trusted_sender = is_trusted_domain(sender_address)
+            final_prob = raw_prob
+
+            if trusted_sender:
+                # Heavily reduce probability for trusted domains
+                # We cap the reduction so it doesn't go below 0
+                reduction_factor = 0.40 # Reduce by 40%
+                final_prob = max(0.0, raw_prob - reduction_factor)
 
             st.subheader("Phishing Probability")
-            st.progress(prediction_prob)
-            st.write(f"**Probability: {prediction_prob * 100:.2f}%**")
+            st.progress(final_prob)
 
-            is_phishing = prediction_prob > 0.50
+            prob_text = f"**Probability: {final_prob * 100:.2f}%**"
+            if trusted_sender and raw_prob > final_prob:
+                 prob_text += f" (Reduced from {raw_prob * 100:.2f}% due to Trusted Sender)"
+            st.write(prob_text)
+
+            is_phishing = final_prob > 0.50
 
             if is_phishing:
                 st.error("🚨 High Risk of Phishing Detected!")
             else:
                 st.success("✅ Looks Legitimate (Low Risk)")
 
-            # 3. AI Analyst (Gemini)
+            # 4. AI Analyst (Gemini)
             # Trigger if Phishing > 50% OR Typosquatting Detected
             if is_phishing or typo_alert:
                 st.divider()
@@ -98,8 +112,9 @@ if st.button("Analyze Email"):
                             Body: {email_body}
 
                             Context:
-                            - Machine Learning Phishing Probability: {prediction_prob * 100:.1f}%
+                            - Machine Learning Phishing Probability: {final_prob * 100:.1f}%
                             - Typosquatting Alert: {typo_alert if typo_alert else "None"}
+                            - Trusted Sender: {"Yes" if trusted_sender else "No"}
 
                             Please explain clearly and concisely why this email is dangerous or suspicious.
                             Highlight specific red flags (urgency, fake domains, grammar, etc.).

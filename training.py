@@ -34,7 +34,7 @@ def create_synthetic_data():
         {"text": "Final Notice: Your account will be deleted in 24 hours.", "label": 1},
         {"text": "Congratulations! You've been selected for a special offer.", "label": 1},
 
-        # --- Legitimate Examples (20) ---
+        # --- Legitimate Examples (Original 20) ---
         {"text": "Meeting agenda for next week's team sync.", "label": 0},
         {"text": "Your Amazon order #12345 has shipped.", "label": 0},
         {"text": "Google Calendar reminder: Dentist appointment tomorrow at 10 AM.", "label": 0},
@@ -55,6 +55,41 @@ def create_synthetic_data():
         {"text": "Can you pick up milk on your way home?", "label": 0},
         {"text": "Thank you for your application. We will be in touch.", "label": 0},
         {"text": "Your monthly bank statement is ready to view.", "label": 0},
+
+        # --- New Legitimate Examples (Expanded 30+) ---
+        {"text": "Hey, are we still on for lunch today?", "label": 0},
+        {"text": "Can you send me the slide deck from the presentation?", "label": 0},
+        {"text": "Checking in to see how you are doing.", "label": 0},
+        {"text": "Don't forget to walk the dog.", "label": 0},
+        {"text": "The game night is scheduled for Saturday at 7 PM.", "label": 0},
+        {"text": "Here is the recipe I told you about.", "label": 0},
+        {"text": "Did you see the latest episode of that show?", "label": 0},
+        {"text": "Confirming our appointment for next Tuesday.", "label": 0},
+        {"text": "The package arrived safely, thanks!", "label": 0},
+        {"text": "Let me know if you need any help with the move.", "label": 0},
+        {"text": "Great job on the presentation yesterday!", "label": 0},
+        {"text": "The weather looks good for the picnic.", "label": 0},
+        {"text": "Please find the meeting minutes attached.", "label": 0},
+        {"text": "Can you review this code when you have a moment?", "label": 0},
+        {"text": "Happy Anniversary! Wishing you both the best.", "label": 0},
+        {"text": "The kids' school play is this Friday.", "label": 0},
+        {"text": "Just wanted to say hi and catch up.", "label": 0},
+        {"text": "Reminder: Doctor's appointment at 2 PM.", "label": 0},
+        {"text": "The electric bill is due on the 15th.", "label": 0},
+        {"text": "I'll be running a bit late, see you soon.", "label": 0},
+        {"text": "Let's brainstorm ideas for the marketing campaign.", "label": 0},
+        {"text": "Could you please sign the document?", "label": 0},
+        {"text": "The tickets for the concert are booked.", "label": 0},
+        {"text": "Thanks for the gift, I really love it.", "label": 0},
+        {"text": "Can you share the wifi password?", "label": 0},
+        {"text": "The plumber is coming tomorrow morning.", "label": 0},
+        {"text": "Looking forward to seeing you at the reunion.", "label": 0},
+        {"text": "Please confirm your attendance by replying to this email.", "label": 0},
+        {"text": "Here are the photos from the party.", "label": 0},
+        {"text": "Let's schedule a call to discuss the project details.", "label": 0},
+        {"text": "Information regarding your account settings update.", "label": 0},
+        {"text": "Your support ticket #999 has been resolved.", "label": 0},
+        {"text": "Welcome to our newsletter! Here is what you missed.", "label": 0},
     ]
 
     df = pd.DataFrame(data)
