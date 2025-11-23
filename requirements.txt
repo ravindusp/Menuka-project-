@@ -1,7 +1,3 @@
 streamlit
-pandas
-scikit-learn
-lightgbm
 google-generativeai
 python-Levenshtein
-joblib
